@@ -2,7 +2,8 @@
 
 
 #include "PlayerCharacter.h"
-#include"GameFramework/SpringArmComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -14,8 +15,10 @@ APlayerCharacter::APlayerCharacter()
 	SpringArmComp->SetupAttachment(RootComponent);
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CamraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
-	bUseControllerRotationYaw = true;
-	bUseControllerRotationPitch = true;
+	SpringArmComp->bUsePawnControlRotation = true;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
 }
 
 // Called when the game starts or when spawned
