@@ -30,13 +30,20 @@ void APlayerCharacter::BeginPlay()
 
 void APlayerCharacter::PlayerMoveForward(float speed)
 {
-	AddMovementInput(GetActorForwardVector(), speed);
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Pitch = 0.0f;
+	ControlRot.Roll = 0.0f;
+	AddMovementInput(ControlRot.Vector(), speed);
 
 }
 
 void APlayerCharacter::PlayerMoveRight(float speed)
 {
-	AddMovementInput(GetActorRightVector(), speed);
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Pitch = 0.0f;
+	ControlRot.Roll = 0.0f;
+	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+	AddMovementInput(RightVector, speed);
 }
 
 // Called every frame
