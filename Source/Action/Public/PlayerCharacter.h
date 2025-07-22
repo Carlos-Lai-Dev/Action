@@ -28,9 +28,14 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileBPClass;
+
 	void PlayerMoveForward(float speed);
 
 	void PlayerMoveRight(float speed);
+	
+	void PrimaryAttack();
 
 public:	
 	// Called every frame

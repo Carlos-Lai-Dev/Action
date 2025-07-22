@@ -46,6 +46,15 @@ void APlayerCharacter::PlayerMoveRight(float speed)
 	AddMovementInput(RightVector, speed);
 }
 
+void APlayerCharacter::PrimaryAttack()
+{
+	FVector HandLocation =  GetMesh()->GetSocketLocation("middle_01_r");
+	FTransform SpawnTrans = FTransform(GetActorRotation(), HandLocation);
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<AActor>(ProjectileBPClass, SpawnTrans, SpawnParams);
+}
+
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
@@ -61,6 +70,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &APlayerCharacter::PlayerMoveRight);
 	PlayerInputComponent->BindAxis("PlyerTurn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &APawn::AddControllerPitchInput);
-
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &APlayerCharacter::PrimaryAttack);
 }
 
