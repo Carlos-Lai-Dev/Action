@@ -5,18 +5,20 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "InteractionComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp");
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(RootComponent);
-	CameraComp = CreateDefaultSubobject<UCameraComponent>("CamraComp");
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CamraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 	SpringArmComp->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComp"));
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 }
@@ -55,6 +57,14 @@ void APlayerCharacter::PrimaryAttack()
 	GetWorld()->SpawnActor<AActor>(ProjectileBPClass, SpawnTrans, SpawnParams);
 }
 
+void APlayerCharacter::PrimaryInteract()
+{
+	if (InteractionComp)
+	{
+		InteractionComp->PrimaryInteract();
+	}
+}
+
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
@@ -71,5 +81,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("PlyerTurn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &APlayerCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &APlayerCharacter::PrimaryInteract);
 }
 

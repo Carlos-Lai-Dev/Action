@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UInteractionComponent;
 
 UCLASS()
 class ACTION_API APlayerCharacter : public ACharacter
@@ -31,11 +32,16 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> ProjectileBPClass;
 
+	UPROPERTY(VisibleAnywhere)
+	UInteractionComponent* InteractionComp;
+
 	void PlayerMoveForward(float speed);
 
 	void PlayerMoveRight(float speed);
 	
 	void PrimaryAttack();
+
+	void PrimaryInteract();
 
 public:	
 	// Called every frame
